@@ -1,17 +1,20 @@
-var ajax = (func)=>{
-    setTimeout(func, 1500);
+var ajax = (func) => {
+    var apidata = [
+        {newsid: '101', newstitle: '1 天静无风声更干'},
+        {newsid: '102', newstitle: '2 华发寻春喜见梅'},
+        {newsid: '103', newstitle: '3 送灵澈'},
+        {newsid: '104', newstitle: '4 苍苍竹林寺,杳杳钟声晚'},
+        {newsid: '105', newstitle: '5 荷笠带斜阳,青山独归远'}
+    ];
+    setTimeout(() => {
+        func(apidata[0].newstitle)
+    }, 1500);
 };
 
-function getData() {
-    alert(fetchApi(news.getOne('105')));
-}
-
-// 从后台异步获取数据
-function fetchApi(data) {
-    return data;
-}
-
-ajax(getData);
+// 测试
+ajax((data) => {
+    alert(data)
+});
 
 var news = {
     _cache: {
@@ -33,7 +36,7 @@ var news = {
         }
     },
 
-    getList() {
+    /*getList() {
         return [
             {newsid: '101', newstitle: '1 天静无风声更干'},
             {newsid: '102', newstitle: '2 华发寻春喜见梅'},
@@ -41,7 +44,7 @@ var news = {
             {newsid: '104', newstitle: '4 苍苍竹林寺,杳杳钟声晚'},
             {newsid: '105', newstitle: '5 荷笠带斜阳,青山独归远'}
         ];
-    },
+    },*/
 
     getOne(newsid) {
         this.loadCache();   // 加载缓存
