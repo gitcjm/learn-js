@@ -8,7 +8,7 @@ var ajax = (callback) => {
     // 1秒后将data传给func函数
     setTimeout(() => {
         callback(data)
-    }, 1000);
+    }, 1500);
 };
 
 /*// 测试
