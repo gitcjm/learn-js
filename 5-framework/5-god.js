@@ -13,7 +13,7 @@ var God = {
             };
             // 监控obj.methods里面的属性
             for (var prop in getData) {
-                this.watch(prop, obj.methods, ()=>{ this.display(name) })
+                this.watch(prop, obj.methods, ()=>{this.display(name)})
             }
         };
     },
@@ -98,6 +98,7 @@ var God = {
 
 var news = {
     template: "<a href='/news/{{id}}'>{{title}}</a>",
+
     data() {
         return {
             id: 101,
@@ -111,6 +112,11 @@ var news = {
             this.$global.version = '2.0';
             alert(this.$global.version);*/
             alert(this.title);
+        },
+        // 沈逸在这儿写了一个changeProp方法,我写在网页中了,一样！
+        changeProp() {
+            this.id = '103';
+            this.title = '周星驰电影《美人鱼》'
         }
     }
 };

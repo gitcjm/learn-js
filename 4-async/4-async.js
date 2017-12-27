@@ -1,18 +1,16 @@
-var ajax = (callback) => {
+var ajax = (func) => {
     var data = [
         {newsid: '101', newstitle: '1 天静无风声更干'},
         {newsid: '102', newstitle: '2 华发寻春喜见梅'},
         {newsid: '103', newstitle: '3 苍苍竹林寺,杳杳钟声晚'},
         {newsid: '104', newstitle: '4 荷笠带斜阳,青山独归远'}
     ];
-    // 1秒后将data传给func函数
-    setTimeout(() => {
-        callback(data)
-    }, 1500);
+    // 1秒后将data传给func函数并执行
+    setTimeout(()=>{func(data)}, 1000);
 };
 
-/*// 测试
-ajax((data)=>{ alert(data) });*/
+// 测试
+//ajax((data)=>{ alert(data) });
 
 var news = {
     _cache: {
@@ -34,10 +32,12 @@ var news = {
                 this.cache_list = apidata;  // 设置新闻列表缓存
                 action();
             });
+        } else {
+            action();
         }
     },
 
-    /*getList() {
+    /*getList() {   // 废除此方法，通过ajax异步获取APIDATA
         return [
             {newsid: '101', newstitle: '1 天静无风声更干'},
             {newsid: '102', newstitle: '2 华发寻春喜见梅'},
@@ -48,19 +48,13 @@ var news = {
 
     getOne(newsid, callback) {
         this.loadCache(() => {
-            var anews = this.cache_list.find(function (element) {
+            var anews = this.cache_list.find((element) => {
                 return element.newsid === newsid;
             });
-
             callback(anews.newstitle);
         });
-
     }
 };
 
-/*
-console.log(news.getOne('102'));*/
-
-news.getOne('104', (item) => {
-    alert(item);
-});
+//console.log(news.getOne('102'));
+news.getOne('104', (item)=>{alert(item)});

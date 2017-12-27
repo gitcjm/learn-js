@@ -4,8 +4,14 @@
     <meta charset="UTF-8">
     <title>javascript魔鬼训练</title>
     <script src="4-async.js"></script>
+    <script>
+        function getNews(newsid) {
+            news.getOne(newsid, (item)=>{alert(item)});
+        }
+    </script>
 </head>
 <body>
-
+<button onclick="getNews('102')">新闻2</button>
+<button onclick="getNews('103')">新闻3</button>
 </body>
 </html>
