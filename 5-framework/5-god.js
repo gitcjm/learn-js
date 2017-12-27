@@ -3,30 +3,45 @@ var God = {
 
     extends(name, obj) {
         this.init();
+
         if ('data' in obj && 'methods' in obj &&
             typeof obj.data == 'function' && typeof obj.methods == 'object') {
             var getData = obj.data();
             if (typeof getData == 'object') {
                 Object.assign(obj.methods, getData, this);
                 this[name] = obj;   // 给God对象设置一个属性
+            };
+            // 监控obj.methods里面的属性
+            for (var prop in getData) {
+                this.watch(prop, obj.methods, ()=>{ this.display(name) })
             }
         };
     },
 
     init() {
-        // 沈逸的方法
+        // 设置属性不可枚举
         Object.defineProperties(this, {
             'init': {
                 enumerable: false
             },
             'extends': {
                 enumerable: false
+            },
+            'watch': {
+                enumerable: false
+            },
+            'render': {
+                enumerable: false
+            },
+            'display': {
+                enumerable: false
             }
         });
+
         var keys = Object.keys(this);
         this.$global = {};
-        /*// function中的this代表这个函数，而箭头函数中的this却能代表所属的对象
-        keys.forEach(function (key) {
+        // function中的this代表这个函数，而箭头函数中的this却能代表所属的对象
+        /*keys.forEach(function (key) {
             if (typeof key != 'function') {
                 this.$global[key] = this[key];  // this代表这个函数
             }
@@ -46,10 +61,10 @@ var God = {
             writable: false
         });*/
         //Object.freeze(this.$global);
-        this.watch('version', this.$global);
+        this.watch('version', this.$global, ()=>{this.render()});
     },
 
-    watch(keyName, obj) {
+    watch(keyName, obj, func) {
         // 为什么要使用_key这个局部变量（或叫私有变量）呢？
         // 错误：too much recursion，先不研究这个！
         var _key = '_' + keyName;
@@ -58,30 +73,44 @@ var God = {
         }
 
         Object.defineProperty(obj, keyName, {
-            set(value) {
-                alert(keyName + ' 属性被修改了');
+            set: (value) => {
                 obj[_key] = value;
+                func();
             },
-            get() {
+            get: () => {
                 return obj[_key];
             }
         })
+    },
+
+    render() {
+        document.getElementById('version').innerHTML = '当前版本是' + this.$global.version;
+    },
+
+    display(objName) {
+        var getTpl = this[objName].template;
+        for (var prop in this[objName].methods) {
+            getTpl = getTpl.replace('{{' + prop + '}}', this[objName].methods[prop]);
+        };
+        document.getElementById('news').innerHTML = getTpl;
     }
 };
 
 var news = {
+    template: "<a href='/news/{{id}}'>{{title}}</a>",
     data() {
         return {
             id: 101,
-            title: "新闻标题"
+            title: "自由平等民主"
         }
     },
 
     methods: {
         show() {
-            alert(this.$global.version);
-            this.$global.version = '3.0';
-            alert(this.$global.version);
+            /*alert(this.$global.version);
+            this.$global.version = '2.0';
+            alert(this.$global.version);*/
+            alert(this.title);
         }
     }
 };
@@ -89,4 +118,4 @@ var news = {
 /*Object.assign(news.methods, news.data());
 news.methods.show();*/
 God.extends('news', news);
-God.news.methods.show();
+//God.news.methods.show();

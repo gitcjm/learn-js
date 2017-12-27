@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="5-god.js"></script>
+    <script>
+        function changeVersion() {
+            God.$global.version = '3.0'
+        }
+        function changeProp() {
+            God.news.methods.id = '103';
+            God.news.methods.title = '今天是个好天气';
+        }
+    </script>
+</head>
+<body>
+    <div id="version"></div>
+    <div id="news"></div>
+    <script>
+        God.render();
+        God.display('news')
+    </script>
+    <button onclick="changeVersion()">修改version</button>
+    <button onclick="changeProp()">修改对象属性</button>
+</body>
+</html>
