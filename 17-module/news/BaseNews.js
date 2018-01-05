@@ -1,4 +1,4 @@
-export const BaseNews = function bn() {
+export default function () {
 
     this.display = function () {
         console.log('新闻基类的display()');
